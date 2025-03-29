@@ -1,0 +1,15 @@
+{
+    "serverId": "67e67855afdbd623a800223c",
+    "hostUsername": "Delta",
+    "playerCount": 2,
+    "status": 2,
+    "location": "factory4_day",
+    "side": "Savage",
+    "time": "CURR",
+    "players": {
+      "67e67855afdbd623a800223c": false,
+      "67911bb000015a3013c4b680": false
+    },
+    "isHeadless": true,
+    "headlessRequesterNickname": "ItchyBalls"
+}
