@@ -3,3 +3,4 @@
 .private_stuff/
 __pycache__
 cogs/__pycache__
+.DS_Store
