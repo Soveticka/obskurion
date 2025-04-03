@@ -1,3 +1,5 @@
 .env
 .venv
 .private_stuff/
+__pycache__
+cogs/__pycache__

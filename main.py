@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from methods import loadPlayers, fileHandling
 import os
 
 from cogs.tarkov import Tarkov
@@ -23,6 +24,10 @@ async def hello(interaction: discord.Interaction):
 async def on_ready():
     #await bot.tree.sync(guild=MY_GUILD)
     await bot.add_cog(Tarkov(bot))
+    newPLayers = loadPlayers.buildPlayerList()
+    fileHandling.saveJson(f'{os.getcwd()}\\.private_stuff\\players.json', newPLayers)
+
+
     print(f'Logged in as {bot.user}.')
     print(await bot.tree.fetch_commands(guild=MY_GUILD))
 

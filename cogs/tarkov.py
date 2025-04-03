@@ -1,6 +1,7 @@
 from array import array
 from discord.ext import commands
 from discord import Embed
+from methods import fileHandling
 import requests
 import urllib3
 
@@ -34,14 +35,12 @@ class Tarkov(commands.Cog):
         except requests.exceptions.RequestException as e:
             print(f"Error occured: {e}")
 
-    async def buildEmbed(playerJson: array, raidData: array, headless: bool) -> Embed:
-        
-        for player in playerJson:
-            
-
+    async def buildEmbed(playerJson: array, raidData: array, headless = False) -> Embed:
+            for raid in raidData:
+                 for player in playerJson:
+                    return
     
     @commands.command()
     async def json(self, ctx, path):
         json = await self.requestData(await self.buildUrl('games-windows.lab', 6969, path))
-        await ctx.send('test')
         print(json)
