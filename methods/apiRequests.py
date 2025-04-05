@@ -31,6 +31,6 @@ def request_data(url: str) -> dict:
 
         try:
             response = requests.get(url, headers=headers, verify=False)
-            return response.json()[0]
+            return response.json()
         except requests.exceptions.RequestException as e:
             print(f"Error occured: {e}")

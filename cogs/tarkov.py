@@ -1,6 +1,7 @@
 from array import array
 from discord.ext import commands
 from discord import Embed
+from methods import apiRequests
 import requests
 import urllib3
 
@@ -66,5 +67,5 @@ class Tarkov(commands.Cog):
             message (_type_): _description_
             path (_type_): _description_
         """
-        json = await self.request_data(await self.build_url('games-windows.lab', 6969, path))
+        json = apiRequests.request_data(await self.build_url('games-windows.lab', 6969, path))
         print(json)

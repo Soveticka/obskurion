@@ -1,4 +1,5 @@
-{
+[
+  {
     "serverId": "67e67855afdbd623a800223c",
     "hostUsername": "Delta",
     "playerCount": 2,
@@ -12,4 +13,19 @@
     },
     "isHeadless": true,
     "headlessRequesterNickname": "ItchyBalls"
-}
+  },
+  {
+    "serverId": "67911bb000015a3013c4b680",
+    "hostUsername": "ItchyBalls",
+    "playerCount": 1,
+    "status": 2,
+    "location": "bigmap",
+    "side": "Savage",
+    "time": "PAST",
+    "players": {
+      "67911bb000015a3013c4b680": false
+    },
+    "isHeadless": false,
+    "headlessRequesterNickname": ""
+  }
+]
