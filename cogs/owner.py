@@ -50,7 +50,7 @@ class Owner(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def edit_embed(self, ctx, name: str, path: str) -> None:
+    async def edit_embed(self, ctx, name: str) -> None:
         """_summary_
 
         Args:
@@ -59,15 +59,58 @@ class Owner(commands.Cog):
         """
         data = fileHandling.loadJson(f"{self.current_dir}/lists/embeds.json")
         embed_list: dict = data.get(name)
-        channel = self.bot.get_channel(embed_list['channelID'])
-        message = await channel.fetch_message(embed_list['messageID'])
+        channel = self.bot.get_channel(int(embed_list['channelID']))
+        message = await channel.fetch_message(int(embed_list['messageID']))
         embed = message.embeds[0]
-        data = apiRequests.request_data(apiRequests.build_url('games-windows.lab', 6969, path))
-        # TODO Figure out logic -> If headless is not active update the field with "Idle". If it is used, update the field with data from "build_embed"
+        #data = apiRequests.request_data(apiRequests.build_url('games-windows.lab', 6969, path))
+        data = [{
+    "serverId": "67e67855afdbd623a800223c",
+    "hostUsername": "Delta",
+    "playerCount": 2,
+    "status": 2,
+    "location": "factory4_day",
+    "side": "Savage",
+    "time": "CURR",
+    "players": {
+      "67e67855afdbd623a800223c": False,
+      "67911bb000015a3013c4b680": False
+    },
+    "isHeadless": True,
+    "headlessRequesterNickname": "ItchyBalls"
+},
+{
+    "serverId": "67e67855afdbd623a8002379",
+    "hostUsername": "Gamma",
+    "playerCount": 2,
+    "status": 2,
+    "location": "factory4_day",
+    "side": "Savage",
+    "time": "CURR",
+    "players": {
+      "67e67855afdbd623a8002379": False,
+      "67911bb000015a3013c4b680": False
+    },
+    "isHeadless": True,
+    "headlessRequesterNickname": "ItchyBalls"
+}]
+        serverID_Delta = '67e67855afdbd623a800223c'
+        serverID_Gamma = '67e67855afdbd623a8002379'
 
-        return
+        field_1 = "Server is Idle"
+        field_2 = "Server is Idle"
 
-    async def build_embed(self, data: dict, mode: str) -> dict:
+        for raid in data:
+            if data['serverId'] == serverID_Delta:
+                field_1 = await self.build_embed(raid, 'field')
+            elif data['serverId'] == serverID_Gamma:
+                field_2 = await self.build_embed(raid, 'field')
+        
+        embed.set_field_at(index=0, name="Delta", value=field_1, inline=True)
+        embed.set_field_at(index=1, name="Gamma", value=field_2, inline=True)
+        await message.edit(embed=embed)
+
+
+    async def build_embed(self, data: dict, mode: str) -> str:
         """Constructs parts of embed depending on the mode -> Can prepare dictionary for each of the parts of Embed.
 
         Args:
@@ -78,20 +121,14 @@ class Owner(commands.Cog):
             dict: ready to be used data
         """
         if mode == 'field':
-            # TODO Find all names that are returned by the API and create a dict with them.
+            # TODO Find all map names that are returned by the API and create a dict with them.
             players = fileHandling.loadJson(f'{self.current_dir}/.private_stuff/players.json')
             playersInRaid = ''
             for player in data['players'].keys():
                 if players.get('players')[player]:
                     playersInRaid += f'players.get(\'players\')[{player}][\'nickname\'],'
                 continue
-            newField = {
-                'startedBy': data['headlessRequesterNickname'],
-                'faction': ('SCAV' if data['side'] == 'Savage' else data['side']),
-                'map': data['location'],
-                'time': data['time'],
-                'players': playersInRaid[:-1]
-            }
+            newField = f'Started By: {data['headlessRequesterNickname']}\nFaction: {('SCAV' if data['side'] == 'Savage' else data['side'])}\nMap: {data['location']}\nTime: {data['time']}\nPlayers: {playersInRaid[:-1]}'
         return newField
     
     @commands.command()
