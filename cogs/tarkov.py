@@ -1,9 +1,11 @@
 from array import array
-from discord.ext import commands
-from discord import Embed
-from methods import apiRequests
+
 import requests
 import urllib3
+from discord import Embed
+from discord.ext import commands
+
+from methods import apiRequests
 
 urllib3.disable_warnings()
 
@@ -12,7 +14,7 @@ class Tarkov(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def build_url(self, address: str, port:int, path: str) -> str:
+    async def build_url(self, address: str, port: int, path: str) -> str:
         """Used to build correct API Url.
 
         Args:
@@ -23,8 +25,8 @@ class Tarkov(commands.Cog):
         Returns:
             str: API Url
         """
-        return f'https://{address}:{port}/{path}'
-    
+        return f"https://{address}:{port}/{path}"
+
     async def request_data(self, url: str) -> array:
         """_summary_
 
@@ -34,9 +36,7 @@ class Tarkov(commands.Cog):
         Returns:
             array: _description_
         """
-        headers = {
-            "responsecompressed": '0'
-        }
+        headers = {"responsecompressed": "0"}
 
         try:
             response = requests.get(url, headers=headers, verify=False)
@@ -44,7 +44,7 @@ class Tarkov(commands.Cog):
         except requests.exceptions.RequestException as e:
             print(f"Error occured: {e}")
 
-    async def build_embed(playerJson: array, raidData: array, headless = False) -> Embed:
+    async def build_embed(playerJson: array, raidData: array, headless=False) -> Embed:
         """_summary_
 
         Args:
@@ -57,8 +57,8 @@ class Tarkov(commands.Cog):
         """
         for raid in raidData:
             for player in playerJson:
-                    return
-    
+                return
+
     @commands.command()
     async def json(self, message, path):
         """_summary_
@@ -67,5 +67,5 @@ class Tarkov(commands.Cog):
             message (_type_): _description_
             path (_type_): _description_
         """
-        json = apiRequests.request_data(await self.build_url('games-windows.lab', 6969, path))
+        json = apiRequests.request_data(await self.build_url("games-windows.lab", 6969, path))
         print(json)
