@@ -91,7 +91,7 @@ class headlessEmbed(embedBuilder):
         fileHandling.saveJson(f"{self.current_dir}/lists/embeds.json", data)
         await ctx.send(embed=embed)
 
-    async def edit_embed(self, ctx, name):
+    async def edit_embed(self, name, ctx=""):
         data = fileHandling.loadJson(f"{self.current_dir}/lists/embeds.json")
         embed_list: dict = data.get(name)
         channel = self.bot.get_channel(int(embed_list["channelID"]))
@@ -158,7 +158,7 @@ class playerEmbed(embedBuilder):
     async def build_embed(self, data, mode=""):
         return await super().build_embed(data, mode)
 
-    async def edit_embed(self, ctx, name):
+    async def edit_embed(self, name, ctx=""):
         # Load embed from json by the identifier
         data = fileHandling.loadJson(f"{self.current_dir}/lists/embeds.json")
         embed_list: dict = data.get(name)
@@ -227,8 +227,7 @@ class customEmbed(commands.Cog):
         if "embedBuilder" in locals() or "embedBuilder" in globals():
             await embedBuilder.generate_embed(ctx, name)
 
-    @commands.command()
-    async def edit_embed(self, ctx, name: str) -> None:
+    async def edit_embed(self, name: str, ctx="") -> None:
         """_summary_
 
         Args:
@@ -240,7 +239,7 @@ class customEmbed(commands.Cog):
         elif name == "players":
             embed = playerEmbed(self.bot, self.current_dir, self.map_list)
 
-        await embed.edit_embed(ctx, name)
+        await embed.edit_embed(name)
 
 
 async def setup(bot: commands.Bot):
