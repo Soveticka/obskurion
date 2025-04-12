@@ -4,9 +4,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from cogs.owner import Owner
-from cogs.tarkov import Tarkov
 from methods import fileHandling, loadPlayers
+from methods.cogLoading import load_cogs
 
 load_dotenv()
 
@@ -27,8 +26,9 @@ async def hello(interaction: discord.Interaction):
 @bot.event
 async def on_ready():
     # await bot.tree.sync(guild=MY_GUILD)
-    await bot.add_cog(Tarkov(bot))
-    await bot.add_cog(Owner(bot))
+    # await bot.add_cog(Tarkov(bot))
+    # await bot.add_cog(Owner(bot))
+    await load_cogs(bot)
     newPLayers = loadPlayers.build_playerlist()
     fileHandling.saveJson(f"{os.getcwd()}/.private_stuff/players.json", newPLayers)
 
