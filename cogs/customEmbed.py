@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 from discord import Embed
 from discord.ext import commands
 from dotenv import load_dotenv
-from requests import head
 
 from methods import apiRequests, fileHandling
 
@@ -225,8 +224,8 @@ class customEmbed(commands.Cog):
             embedBuilder = headlessEmbed(self.bot, self.current_dir, self.map_list)
         elif name == "players":
             embedBuilder = playerEmbed(self.bot, self.current_dir, self.map_list)
-
-        await embedBuilder.generate_embed(ctx, name)
+        if "embedBuilder" in locals() or "embedBuilder" in globals():
+            await embedBuilder.generate_embed(ctx, name)
 
     @commands.command()
     async def edit_embed(self, ctx, name: str) -> None:
@@ -242,3 +241,7 @@ class customEmbed(commands.Cog):
             embed = playerEmbed(self.bot, self.current_dir, self.map_list)
 
         await embed.edit_embed(ctx, name)
+
+
+async def setup(bot: commands.Bot):
+    await bot.add_cog(customEmbed(bot))

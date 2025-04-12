@@ -69,3 +69,11 @@ class Tarkov(commands.Cog):
         """
         json = apiRequests.request_data(await self.build_url("games-windows.lab", 6969, path))
         print(json)
+
+    @commands.command()
+    async def reloadTest(self, ctx):
+        await ctx.reply("Loool")
+
+
+async def setup(bot: commands.Bot):
+    await bot.add_cog(Tarkov(bot))

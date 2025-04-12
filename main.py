@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from methods import fileHandling, loadPlayers
 from methods.cogLoading import load_cogs
+from utils.logging_helpers import log_cog_load_failure, log_cog_load_success, logger, setup_command_hooks
 
 load_dotenv()
 
@@ -15,7 +16,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-cogsToLoad = ["error", "help", "nsfw", "owner", "reminder"]
+setup_command_hooks(bot)
 
 
 @bot.tree.command(name="hello", description="Says Hello!", guild=MY_GUILD)
@@ -26,8 +27,6 @@ async def hello(interaction: discord.Interaction):
 @bot.event
 async def on_ready():
     # await bot.tree.sync(guild=MY_GUILD)
-    # await bot.add_cog(Tarkov(bot))
-    # await bot.add_cog(Owner(bot))
     await load_cogs(bot)
     newPLayers = loadPlayers.build_playerlist()
     fileHandling.saveJson(f"{os.getcwd()}/.private_stuff/players.json", newPLayers)
